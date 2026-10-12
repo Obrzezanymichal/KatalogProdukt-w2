@@ -121,5 +121,21 @@ namespace KatalogProduktów
                 Console.WriteLine($"Nie można sprzedać produktu: {Nazwa}. Brak na stanie.");
             }
         }
+        public static Produkt ZnajdzPoNazwie(Produkt[] produkty, string nazwa)
+        {
+            foreach (var produkt in produkty)
+            {
+                if (produkt.Nazwa == nazwa)
+                {
+                    return produkt; //znaleźliśmy produkt o podanej nazwie, zwracamy go
+                }
+            }
+            return null; //jeśli nie znaleźliśmy produktu o podanej nazwie, zwracamy null
+        }
+        public static Produkt ZnajdzPoNazwie(List<Produkt> produkty, string nazwa)
+        {
+            //zwróć pierwszy który znajdziesz z podobną nazwą (niezależnie od wielkości liter) lub null jeśli nie znajdziesz
+            return produkty.FirstOrDefault(p => p.Nazwa.Contains(nazwa, StringComparison.OrdinalIgnoreCase)); //zwraca pierwszy produkt o podanej nazwie lub null jeśli nie znaleziono
+        }
     }
 }
