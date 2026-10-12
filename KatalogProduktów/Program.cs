@@ -15,8 +15,20 @@ Produkt zasilacz = new Produkt("Zasilacz", 189.99, "Podzespoły", 5);
 
 //tworzymy tablicę produktów
 Produkt[] produkty = { procesor, ram, ssd, zasilacz };
+//pusta tablica na 10 produktów
+Produkt[] produkty2 = new Produkt[10];
+//jeśli chcemy listę to:
+//najpierw słowo List potem w nawiasach ostrych typ danych jaki chcemy przechowywać
+// potem nazwa zmiennej i przypisujemy konstruktorem nową pustą listę
+List<Produkt> listaProduktow = new List<Produkt>();
+//mając listę dodajemy do niej produkty metodą Add
+listaProduktow.Add(procesor);
+listaProduktow.Add(ram);
+listaProduktow.Add(ssd);
+listaProduktow.Add(zasilacz);
 
-foreach (Produkt produkt in produkty)
+//tu możemy wymienić sobię tablicę na listę i odwrotnie i dalej będzie działać
+foreach (Produkt produkt in listaProduktow)
 {
     produkt.WypiszProdukt();
 }
@@ -24,7 +36,7 @@ foreach (Produkt produkt in produkty)
 
 double suma = 0;
 int licznik = 0;
-
+//dla tablicy przechodziliśmy "ręcznie" po indeksach i sprawdzaliśmy cenę
 for (int i = 0; i < nazwy.Length; i++)
 {
     // Do sumy trafiają tylko produkty droższe niż 200 zł
@@ -34,25 +46,31 @@ for (int i = 0; i < nazwy.Length; i++)
         licznik++;
     }
 }
+//dla listy możemy użyć LINQ do zsumowania całości
+double sumaListy = listaProduktow.Sum(p => p.Cena); //czytamy jako dla każdego produktu sumuj jego pole Cena
+//albo możemy odfiltrować LINQ produkty droższe niż 200 zł i zsumować tylko te droższe
+List<Produkt> drogieProdukty = listaProduktow.Where(p => p.Cena > 200).ToList(); //zwraca listę produktów droższych niż 200 zł
+//możemy połaczyć obie metody (tzw. chainowanie metod) i od razu zsumować ceny produktów droższych niż 200 zł
+double sumaDrogichProduktow = listaProduktow.Where(p => p.Cena > 200).Sum(p => p.Cena);
+
 
 // Uwaga: przy pustym liczniku byłoby dzielenie przez zero
 double srednia = suma / licznik;
 //Console.WriteLine($"Ilość produktów w bazie: {nazwy.Length}");
 //Console.WriteLine($"Średnia cena: {srednia:F2} zł z {licznik} produktów");
 
+//srednia dla listy
+double sredniaListy = listaProduktow.Average(p => p.Cena); //zwraca średnią cenę wszystkich produktów w liście
+
 //wywołanie metody statycznej klasy Produkt, która liczy sumę wartości magazynu dla wszystkich produktów w tablicy
 //wywołujemy poprzez nazwę klasy -> kropka -> nazwa metody statycznej -> w nawiasach podajemy tablicę produktów
 double wartoscMagazynu = Produkt.ObliczWartoscMagazynu(produkty);
 Console.WriteLine($"Suma wartości magazynu dla wszystkich produktów: {wartoscMagazynu:f2} zł");
 
+double wartoscListy = Produkt.ObliczWartoscMagazynu(listaProduktow);
+
+Console.WriteLine(procesor.ToString());
+
 //ZADANIE
-//Wywolaj metode sprzedaj dla kazdego produktu w tablicy za pomoca petli foreach
-//Powtorz calosc tyle azy, zeby zobaczuc blad o braku towaru w magazynie
-foreach (Produkt produkt in produkty)
-{
-    produkt.Sprzedaj();
-    produkt.Sprzedaj();
-    produkt.Sprzedaj();
-    produkt.Sprzedaj();
-    produkt.Sprzedaj();
-}
+//Wywołaj metodę sprzedaj dla każdego produktu w tablicy za pomocą pętli foreach. 
+//Powtórz całość tyle razy, żeby zobaczyć błąd o braku towaru w magazynie. 
